@@ -31,9 +31,10 @@ deleteButton.addEventListener('click', _ => {
         body: JSON.stringify({
             title: document.getElementById("delete-title").value
         })
-    }).then(res => {
-        if (res.ok) return res.json()
     })
+        .then(res => {
+            if (res.ok) return res.json()
+        })
         .then(response => {
             console.log(response)
         })

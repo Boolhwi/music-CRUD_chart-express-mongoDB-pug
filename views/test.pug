@@ -1,0 +1,27 @@
+html
+    head
+        meta(charset='utf-8')
+    body
+        div
+            form(action='/quotes' method='post')
+                p
+                    input#create_title(type="text" placeholder="name" name="name")
+                p
+                    input#create_artist(type="text" placeholder="quote" name="quote")
+                p
+                    button(type="submit") 등록하기
+
+        div
+            each val in quotes
+                    ul
+                        li
+                            span #{val.name} | 
+                            span #{val.quote}
+
+        div
+            h2 Darth Vadar invades!
+            button#update-button Replace your quote
+        div
+            h2 Remove Darth Vadar!
+            button#delete-button Delete Darth Vadar
+    script(src="mm.js")

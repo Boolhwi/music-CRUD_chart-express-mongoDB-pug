@@ -8,8 +8,8 @@ let url = 'mongodb+srv://B:123321@cluster0.axyta.mongodb.net/star wars?retryWrit
 MongoClient.connect(url, { useUnifiedTopology: true })
     .then(client => {
         console.log('Connected to Database')
-        const db = client.db('music_app')
-        const pmc_collection = db.collection('pop_music_chart')
+        const db = client.db('a')
+        const quotesCollection = db.collection('b')
 
         app.set('views', './views')
         app.set('view engine', 'pug')
@@ -18,54 +18,44 @@ MongoClient.connect(url, { useUnifiedTopology: true })
         app.use(bodyParser.json())
 
         app.get('/', function (req, res) {
-            db.collection('pop_music_chart').find().toArray()
+            db.collection('b').find().toArray()
                 .then(results => {
-                    res.render('index.pug', { target: results })
+                    res.render('test.pug', { quotes: results })
                 })
                 .catch(error => console.error(error))
 
         })
 
-        app.post('/create', (req, res) => {
-            let temp = {
-                title: req.body.title,
-                artist: req.body.artist,
-                like: 0
-            }
-
-            pmc_collection.insertOne(temp)
+        app.post('/quotes', (req, res) => {
+            quotesCollection.insertOne(req.body)
                 .then(result => {
                     res.redirect('/')
                 })
                 .catch(error => console.error(error))
         })
 
-        app.post('/like', (req, res) => {
-            pmc_collection.findOne(
+        app.put('/quotes', (req, res) => {
+            quotesCollection.findOneAndUpdate(
+                { name: 'harry' },
                 {
-                    title: req.body.title,
-                    artist: req.body.artist
-                })
-                .then(results => {
-                    pmc_collection.updateOne({
-                        title: req.body.title,
-                        artist: req.body.artist
-                    }, {
-                        $set: {
-                            like: ++results.like
-                        }
-                    })
-                        .then(result => {
-                            res.redirect('/')
-                        })
-                        .catch(error => console.error(error))
+                    $set: {
+                        name: req.body.name,
+                        quote: req.body.quote
+                    }
+                },
+                {
+                    upsert: true
+                }
+            )
+                .then(result => {
+                    res.json(result)
                 })
                 .catch(error => console.error(error))
         })
 
-        app.post('/delete', (req, res) => {
-            pmc_collection.deleteOne(
-                { title: req.body.title }
+        app.delete('/quotes', (req, res) => {
+            quotesCollection.deleteOne(
+                { name: req.body.name }
             )
                 .then(result => {
                     if (result.deletedCount === 0) {
@@ -80,5 +70,4 @@ MongoClient.connect(url, { useUnifiedTopology: true })
             console.log('listening on 3000')
         })
     })
-    .catch(error => console.error(error))
-
+    .catch(console.error)
