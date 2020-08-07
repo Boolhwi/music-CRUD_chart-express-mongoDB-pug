@@ -30,16 +30,13 @@ html
                 p
                     input(type="text" placeholder="노래 이름" name="title")
                 p
-                    input(type="text" placeholder="가수 이름" name="artist")
-                p
                     button(type="submit") 좋아요!
 
         div
-            form(action='/delete' method='post')
                 p
                     input#delete-title(type="text" placeholder="노래 이름" name="title")
                 p
-                    button#delete-button(type="submit") 제거하기
+                    button#delete-button 제거하기
 
         div
             div 실시간 음원 차트
@@ -52,6 +49,6 @@ html
                             span #{val.like}
 
         div#message #{text}
-//        script(src='main.js')
+        script(src='main.js')
 
         

@@ -40,16 +40,30 @@ MongoClient.connect(url, { useUnifiedTopology: true })
                 .catch(error => console.error(error))
         })
 
+        app.post('/search_title', (req, res) => {
+            db.collection('pop_music_chart').find({ title: req.body.title }).toArray()
+                .then(results => {
+                    res.render('index.pug', { target: results })
+                })
+                .catch(error => console.error(error))
+        })
+
+        app.post('/search_artist', (req, res) => {
+            db.collection('pop_music_chart').find({ artist: req.body.artist }).toArray()
+                .then(results => {
+                    res.render('index.pug', { target: results })
+                })
+                .catch(error => console.error(error))
+        })
+
         app.post('/like', (req, res) => {
             pmc_collection.findOne(
                 {
-                    title: req.body.title,
-                    artist: req.body.artist
+                    title: req.body.title
                 })
                 .then(results => {
                     pmc_collection.updateOne({
-                        title: req.body.title,
-                        artist: req.body.artist
+                        title: req.body.title
                     }, {
                         $set: {
                             like: ++results.like
@@ -69,9 +83,9 @@ MongoClient.connect(url, { useUnifiedTopology: true })
             )
                 .then(result => {
                     if (result.deletedCount === 0) {
-                        return res.json('No quote to delete')
+                        return res.json('No music to delete')
                     }
-                    res.json(`Deleted Darth Vadar's quote`)
+                    res.json(req.body.title + ` Deleted`)
                 })
                 .catch(error => console.error(error))
         })
