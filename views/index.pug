@@ -1,54 +1,65 @@
 html
     head
         meta(charset='utf-8')
+        style
+            include index.css
+            
+
     body
-        div
-            form(action='/create' method='post')
-                p
-                    input#create_title(type="text" placeholder="노래 이름" name="title")
-                p
-                    input#create_artist(type="text" placeholder="가수 이름" name="artist")
-                p
-                    button(type="submit") 등록하기
-
-        div
-            form(action='/search_title' method='post')
-                p
-                    input(type="text" placeholder="노래 이름" name="title")
-                p
-                    button#search_title_btn(type="submit") 노래 검색하기
-
-        div
-            form(action='/search_artist' method='post')
-                p
-                    input(type="text" placeholder="가수 이름" name="artist")
-                p
-                    button#search_artist_btn(type="submit") 가수 검색하기
-
-        div
-            form(action='/like' method='post')
-                p
-                    input(type="text" placeholder="노래 이름" name="title")
-                p
-                    button(type="submit") 좋아요!
-
-        div
-                p
-                    input#delete-title(type="text" placeholder="노래 이름" name="title")
-                p
-                    button#delete-button 제거하기
-
-        div
-            div 실시간 음원 차트
+        div#grid_container
             div
-                each val in target
-                    ul
-                        li
-                            span #{val.title} | 
-                            span #{val.artist} | 
-                            span #{val.like}
+                div
+                    form(action='/search_title' method='post')
+                        p
+                            input.inputs(type="text" placeholder="음원 이름" name="title")
+                        p
+                            button.btn#search_title_btn(type="submit") 음원 검색하기
 
-        div#message #{text}
+                div
+                    form(action='/search_artist' method='post')
+                        p
+                            input.inputs(type="text" placeholder="가수 이름" name="artist")
+                        p
+                            button.btn#search_artist_btn(type="submit") 가수 검색하기
+
+                div
+                    form(action='/like' method='post')
+                        p
+                            input.inputs(type="text" placeholder="음원 이름" name="title")
+                        p
+                            button.btn(type="submit") 좋아요!
+
+            div
+                    div#title_name ♬실시간 음원 차트♬
+                    div#title_list_container
+                        each val in target
+                            ul#title_list
+                                li
+                                    span#info_title #{val.title} | 
+                                    span#info_artist #{val.artist} | 
+                                    span#info_like #{val.like}
+
+                    div#message #{text}
+
+            div
+                div
+                    form(action='/create' method='post')
+                        p
+                            input.inputs#create_title(type="text" placeholder="음원 이름" name="title")
+                        p
+                            input.inputs#create_artist(type="text" placeholder="가수 이름" name="artist")
+                        p
+                            button.btn(type="submit") 음원 등록하기  
+
+                div
+                    p
+                        input.inputs#delete-title(type="text" placeholder="음원 이름" name="title")
+                    p
+                        button.btn#delete-button 음원 제거하기
+
+            
+
+            
         script(src='main.js')
 
         
